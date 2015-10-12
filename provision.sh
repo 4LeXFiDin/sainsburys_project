@@ -27,7 +27,7 @@ if [[ $1 == "web" ]] ; then
 
   echo -e "Starting very-basic-http-server"
   systemctl start nginx.service
-  systemtctl enable nginx.service
+  systemctl enable nginx.service
 
 elif [[ $1 == "app" ]] ; then
 
