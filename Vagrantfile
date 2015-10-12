@@ -55,6 +55,7 @@ Vagrant.configure(2) do |config|
     app2.vm.box = "centos7_vbadd_puppet"
     app2.vm.hostname = "vagrant-app2"
     app2.vm.network "private_network", ip: "192.168.2.12"
+    app2.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
     app2.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_App2"
       vb.customize ["modifyvm", :id, "--memory", "1024"]
