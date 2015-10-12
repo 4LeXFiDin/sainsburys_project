@@ -18,7 +18,8 @@ if [[ $1 == "web" ]] ; then
   echo -e "--- Installing Nginx ---"
   yum install nginx -y > /dev/null
   cp /vagrant/nginx_rp.conf /etc/nginx/conf.d/nginx_rp.conf
-  #chmod 644 /etc/nginx/conf.d/nginx_rp.conf
+  chmod 644 /etc/nginx/conf.d/nginx_rp.conf
+  chmod 755 /var/log/nginx
 
   echo -e "--- Setting up firewall ---"
   sudo firewall-cmd --permanent --add-service=http
