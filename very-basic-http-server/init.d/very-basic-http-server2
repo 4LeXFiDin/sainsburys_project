@@ -1,0 +1,97 @@
+#!/bin/bash
+
+# Source function library.
+. /etc/init.d/functions
+
+exec="/usr/bin/very-basic-http-server"
+prog="very-basic-http-server"
+logfile="/var/log/very-basic-http-server"
+
+pidfile=${PIDFILE-/var/run/very-basic-http-server/very-basic-http-server.pid}
+options="$VBHS_OPTIONS $OPTIONS"
+lockfile="/var/lock/subsys/$prog"
+
+start() {
+    [ -x $exec ] || exit 5
+    #[ -f $config ] || exit 6
+    echo -n $"Starting $prog: "
+    #daemon $exec
+    daemon --pidfile=${pidfile} --user vagrant "$exec $options run >> $logfile 2>&1"
+    #start_daemon $exec
+    $exec &
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && touch $lockfile
+    return $retval
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    #killproc $prog
+    killproc_nice -p ${pidfile} -d 300 $prog
+    #kill -9 $exec
+    retval=$?
+    echo
+    [ $retval -eq 0 ] && rm -f $lockfile
+    return $retval
+}
+
+restart() {
+    stop
+    start
+}
+
+reload() {
+    restart
+}
+
+force_reload() {
+    restart
+}
+
+rh_status() {
+    status $exec
+}
+
+rh_status_q() {
+    rh_status >/dev/null 2>&1
+}
+
+
+case "$1" in
+    start)
+        #rh_status_q && exit 0
+        start
+        #$1
+        ;;
+    stop)
+        #rh_status_q || exit 0
+        stop
+        #$1
+        ;;
+    restart)
+        stop
+        start
+        #$1
+        ;;
+    reload)
+        #rh_status_q || exit 7
+        rh_status_q || exit 7
+        #$1
+        ;;
+    force-reload)
+        force_reload
+        ;;
+    status)
+        rh_status
+        ;;
+    condrestart|try-restart)
+        rh_status_q || exit 0
+        rh_status_q || exit 0
+        restart
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload}"
+        #exit 2
+esac
+exit $?
