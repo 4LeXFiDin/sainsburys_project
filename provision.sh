@@ -1,5 +1,7 @@
 #!/bin/bash
 
+vbhs=very-basic-http-server
+
 echo -e "--- Provisioning virtual Machine... ---"
 
 echo -e "--- Setting up keyboard US ---"
@@ -25,7 +27,7 @@ if [[ $1 == "web" ]] ; then
   sudo firewall-cmd --permanent --add-service=http
   sudo firewall-cmd --reload
 
-  echo -e "Starting very-basic-http-server"
+  echo -e "Starting $vbhs"
   systemctl start nginx.service
   systemctl enable nginx.service
 
@@ -36,13 +38,13 @@ elif [[ $1 == "app" ]] ; then
   sudo firewall-cmd --reload
 
   echo -e "Installing very-basic-http-server"
-  cp /vagrant/very-basic-http-server /usr/bin
-  #chmod 755 /usr/bin/very-basic-http-server
-  cp /vagrant/very-basic-http-server_service /etc/init.d/very-basic-http-server
+  cp /vagrant/$vbhs/bin/$vbhs /usr/bin
+  #chmod 755 /usr/bin/$vbhs
+  cp /vagrant/$vbhs/init.d/$vbhs /etc/init.d/$vbhs
 
   echo -e "Starting very-basic-http-server"
-  #systemtctl enable very-basic-http-server
-  systemctl start very-basic-http-server
+  #systemtctl enable $vbhs
+  systemctl start $vbhs
 
 else
 
