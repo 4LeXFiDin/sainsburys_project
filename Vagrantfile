@@ -36,7 +36,7 @@ Vagrant.configure(2) do |config|
      #config.vm.box = "harshicorp/precise32"
     app1.vm.hostname = "vagrant-app1"
     app1.vm.network "private_network", ip: "192.168.2.11"
-    app1.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
+    #app1.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
     #config.vm.synced_folder "./", "/var/www", create: true, group: "www-data", owner: "www-data"
     app1.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_App1"
@@ -62,6 +62,28 @@ Vagrant.configure(2) do |config|
     end
     #app2.vm.provision "file", source: "./very-basic-http-server", destination: "/usr/lib/"
     app2.vm.provision :shell, path: "provision.sh", args: "app"
+
+  end
+
+  #config.vm.define "test" do |test|
+  config.vm.define "test", autostart: false do |test|
+
+    test.vm.provision "shell", inline: "echo ----- Start provisioning on test -----"
+    test.vm.box = "centos7_vbadd_puppet"
+    test.vm.hostname = "vagrant-test"
+    #test.vm.network "public_network", auto_config: false
+    test.vm.network "private_network", ip: "192.168.2.13"
+    #test.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
+    test.vm.provision "chef_solo" do |chef|
+      chef.cookbooks_path = "cookbooks"
+      chef.add_recipe "nginx"
+      end
+    test.vm.provider "virtualbox" do |vb|
+      vb.name = "Vagrant_Test"
+      vb.customize ["modifyvm", :id, "--memory", "1024"]
+    end
+    #test.vm.provision "file", source: "./very-basic-http-server", destination: "/usr/lib/"
+    test.vm.provision :shell, path: "provision.sh", args: "app"
 
   end
 
