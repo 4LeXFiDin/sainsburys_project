@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Source function library.
+# Source function library
 . /etc/init.d/functions
 
 exec=very-basic-http-server
