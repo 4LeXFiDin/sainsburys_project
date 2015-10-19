@@ -16,7 +16,7 @@ Vagrant.configure(2) do |config|
   
   config.vm.define "web", primary: true do |web|
     
-    web.vm.provision "shell", inline: "echo INSTALL WEB SERVER"
+    web.vm.provision "shell", inline: "echo ----- Start installing web server -----"
     web.vm.box = "centos7_vbadd_puppet"
     web.vm.hostname = "vagrant-web"
     web.vm.network "private_network", ip: "192.168.2.10"
@@ -36,7 +36,7 @@ Vagrant.configure(2) do |config|
      #config.vm.box = "harshicorp/precise32"
     app1.vm.hostname = "vagrant-app1"
     app1.vm.network "private_network", ip: "192.168.2.11"
-    #app1.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
+    app1.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
     #config.vm.synced_folder "./", "/var/www", create: true, group: "www-data", owner: "www-data"
     app1.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_App1"
@@ -55,12 +55,11 @@ Vagrant.configure(2) do |config|
     app2.vm.box = "centos7_vbadd_puppet"
     app2.vm.hostname = "vagrant-app2"
     app2.vm.network "private_network", ip: "192.168.2.12"
-    app2.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
+    #app2.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
     app2.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_App2"
       vb.customize ["modifyvm", :id, "--memory", "1024"]
     end
-    #app2.vm.provision "file", source: "./very-basic-http-server", destination: "/usr/lib/"
     app2.vm.provision :shell, path: "provision.sh", args: "app"
 
   end
@@ -73,23 +72,22 @@ Vagrant.configure(2) do |config|
     test.vm.hostname = "vagrant-test"
     #test.vm.network "public_network", auto_config: false
     test.vm.network "private_network", ip: "192.168.2.13"
+    test.vm.provision :shell, path: "provision.sh"
     #test.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
-    test.vm.provision "chef_solo" do |chef|
+    #test.vm.provision :shell do |shell|
+    #  shell.path = "provision.sh"
+    #end
+    test.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "cookbooks"
+      #chef.cookbooks_path = ["./cookbooks"]
+      chef.add_recipe "chef-solo"
       chef.add_recipe "nginx"
       end
     test.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_Test"
       vb.customize ["modifyvm", :id, "--memory", "1024"]
     end
-    #test.vm.provision "file", source: "./very-basic-http-server", destination: "/usr/lib/"
-    test.vm.provision :shell, path: "provision.sh", args: "app"
-
   end
-
-  #config.vm.provision "shell" do |s|
-  #    s.path = "provision.sh"
-  #end
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -145,3 +143,4 @@ Vagrant.configure(2) do |config|
   #   sudo yum install httpd -y
   # SHELL
 end
+
