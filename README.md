@@ -7,36 +7,36 @@ The purpose of the project is to install a very basic http server reachable thro
 * 1 node where with Nginx is installed that will work as a load balancer
 * 2 application nodes 
 
+Building history : https://travis-ci.org/4LeXFiDin/sainsburys_project/builds
+
 ## Requirements
 
-* [git client]
+* [Git]
   - Debian/Ubuntu : sudo apt-get install git
   - Fedora, Red Hat or CentOS : sudo yum install git
   - SUSE : sudo zypper -v install git
   - Windows : gitbash or cygwin
 
 * [VirtualBox] - https://www.virtualbox.org
+  The CentOS 7 vagrant box is downloadable here :
+  https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box
 
 * [Vagrant] - https://www.vagrantup.com/downloads.html
   It works with a lot of Linux platform like Fedora/Centos/RHEL/Debian/Ubuntu and also with Windows or MaxOSX). You can download it at the floolowing address : 
 
-* The CentOS 7 vagrant box is downloadable here :
-  https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box
-
 ## How To Build The Virtual Machine
 
-Building the virtual machine is this easy:
+After installing the required applications and the boxes, what remains is to build the VMs :
 
     host $ git clone https://github.com/4LeXFiDin/sainsburys_project.git
     host $ cd sainsburys_project
     host $ vagrant up --provision
+    
+Connect afterward to the web server with the following URL with you browser :
 
-If the base box is not present that command fetches it first.
-
-    host $ vagrant ssh
-    Welcome to Ubuntu 14.04 LTS ...
-    ...
-    vagrant@vagrant:~$
+    http://192.168.2.10
+    
+that is the nginx server address.
 
 ## Usage
 
