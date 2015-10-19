@@ -12,6 +12,11 @@ localectl set-keymap en
 export LANG=en_US.UTF8
 #echo "LANG=\"en_US.UTF8\"" > /etc/sysconfig/i18n
 
+#localectl set-locale LANG=fr_FR.UTF-8
+#localectl set-x11-keymap fr
+#localectl set-keymap fr
+#export LANG=fr_FR.UTF8
+
 if [[ $1 == "web" ]] ; then
 
   echo -e "--- Installing EPEL repository ---"
@@ -46,9 +51,9 @@ elif [[ $1 == "app" ]] ; then
   #systemtctl enable $vbhs
   systemctl start $vbhs
 
-else
+#else
 
-  echo -e "ERROR during scripting execution"
+  #echo -e "ERROR during scripting execution"
 
 fi
 
