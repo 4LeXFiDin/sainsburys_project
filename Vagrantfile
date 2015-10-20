@@ -14,6 +14,9 @@ Vagrant.configure(2) do |config|
   # boxes at https://atlas.hashicorp.com/search.
   # config.vm.box = "base"
   
+    #config.vm.box_url = "https://cloud-images.ubuntu.com/vagrant/trusty/current/trusty-server-cloudimg-amd64-vagrant-disk1.box"
+    #config.box.url = "https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box"
+
   config.vm.define "web", primary: true do |web|
     
     web.vm.provision "shell", inline: "echo ----- Start installing web server -----"
@@ -22,8 +25,13 @@ Vagrant.configure(2) do |config|
     web.vm.network "private_network", ip: "192.168.2.10"
     web.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_Web"
-      vb.customize ["modifyvm", :id, "--memory", "1024"]
-      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      #vb.customize ["modifyvm", :id, "--memory", "512"]
+      #vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      vb.customize [
+        "modifyvm", :id,
+	"--groups", "/ProjectSainsbury",
+	"--memory", "512"
+      ]
     end
     web.vm.provision :shell, path: "provision.sh", args: "web"
 
@@ -40,8 +48,13 @@ Vagrant.configure(2) do |config|
     #config.vm.synced_folder "./", "/var/www", create: true, group: "www-data", owner: "www-data"
     app1.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_App1"
-      vb.customize ["modifyvm", :id, "--memory", "1024"]
-      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      #vb.customize ["modifyvm", :id, "--memory", "512"]
+      #vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+      vb.customize [
+        "modifyvm", :id,
+        "--groups", "/ProjectSainsbury",
+        "--memory", "512"
+        ]
     end
     #app1.vm.provision "file", source: "./very-basic-http-server", destination: "/tmp/"
     app1.vm.provision :shell, path: "provision.sh", args: "app"
@@ -58,7 +71,12 @@ Vagrant.configure(2) do |config|
     #app2.vm.network :forwarded_port, guest: 80, host: 8484, auto_correct: true
     app2.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_App2"
-      vb.customize ["modifyvm", :id, "--memory", "1024"]
+      #vb.customize ["modifyvm", :id, "--memory", "512"]
+        vb.customize [
+          "modifyvm", :id,
+          "--groups", "/ProjectSainsbury",
+          "--memory", "512"
+        ]
     end
     app2.vm.provision :shell, path: "provision.sh", args: "app"
 
@@ -80,12 +98,13 @@ Vagrant.configure(2) do |config|
     test.vm.provision :chef_solo do |chef|
       chef.cookbooks_path = "cookbooks"
       #chef.cookbooks_path = ["./cookbooks"]
-      chef.add_recipe "chef-solo"
+      #chef.add_recipe "chef-solo"
       chef.add_recipe "nginx"
+      chef.add_recipe "nginx_conf"
       end
     test.vm.provider "virtualbox" do |vb|
       vb.name = "Vagrant_Test"
-      vb.customize ["modifyvm", :id, "--memory", "1024"]
+      vb.customize ["modifyvm", :id, "--memory", "512"]
     end
   end
 
@@ -123,7 +142,7 @@ Vagrant.configure(2) do |config|
   #   vb.gui = true
   #
   #   # Customize the amount of memory on the VM:
-  #   vb.memory = "1024"
+  #   vb.memory = "512"
   # end
   #
   # View the documentation for the provider you are using for more
