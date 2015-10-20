@@ -30,7 +30,7 @@ The purpose is to receive the following message from the load balancer that host
 
 After installing the required applications, download the vagrant box :
 
-    host $ vagrant box add "https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box"
+    host $ vagrant box add centos7_vbadd_puppet "https://github.com/tommy-muehle/puppet-vagrant-boxes/releases/download/1.1.0/centos-7.0-x86_64.box"
  and what remains is to build the VMs :
 
     host $ git clone https://github.com/4LeXFiDin/sainsburys_project.git
