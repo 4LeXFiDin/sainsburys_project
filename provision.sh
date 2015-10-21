@@ -44,8 +44,9 @@ elif [[ $1 == "app" ]] ; then
 
   echo -e "Installing very-basic-http-server"
   cp /vagrant/$vbhs/bin/$vbhs /usr/bin
-  #chmod 755 /usr/bin/$vbhs
+  chmod 755 /usr/bin/$vbhs
   cp /vagrant/$vbhs/init.d/$vbhs /etc/init.d/$vbhs
+  chmod 755 /etc/init.d/$vbhs
 
   echo -e "Starting very-basic-http-server"
   #systemtctl enable $vbhs
