@@ -1,8 +1,6 @@
-# sainsburys_project
-
 ## Description
 
-The purpose of the project is to install a very basic http server reachable through nginx as load balancer. It will install 3 nodes :
+The purpose of the project is to install a very basic http server (compiled from a basic GO scipt) reachable through nginx as load balancer. It will install 3 nodes :
 
 * 1 node where with Nginx is installed that will work as a load balancer
 * 2 application nodes 
@@ -48,7 +46,7 @@ You can test the 2 applications behind the load balancer with the following URLs
 
 ## Continuous Integration
 
- - [TravisCI/4LeXFiDin](https://travis-ci.org/4LeXFiDin/sainsburys_project/builds)
+ - [TravisCI/4LeXFiDin](https://travis-ci.org/4LeXFiDin/vagrant_nginx_round-robin/builds)
 
 ## Provisionning
 
